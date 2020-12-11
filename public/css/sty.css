@@ -1,0 +1,30 @@
+body{
+    font-family: 'Arvo', serif;
+}
+
+.height{
+    /*height: 1000px;*/
+    min-height: 100vh;
+}
+
+.title-underline{
+    width: 200px;
+    height: 10px;
+    margin: 0 auto;
+    /* background: blue!important; */
+}
+
+.height-80{
+    /*height: 1000px;*/
+    min-height: 100vh;
+}
+
+.about-picture{
+    background: url(../img/66.jpg)center/cover fixed no-repeat;
+}
+
+#filler{
+       background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url(ed.jpeg)center/cover fixed no-repeat;
+       font: font-family: 'Anton', sans-serif;;
+ 
+}
