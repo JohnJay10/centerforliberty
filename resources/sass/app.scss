@@ -4,5 +4,14 @@
 // Variables
 @import 'variables';
 
+$fa-font-path: "../webfonts";
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import '~startbootstrap-sb-admin-2/css/sb-admin-2.css';  
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
+
