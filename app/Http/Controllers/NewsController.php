@@ -54,6 +54,7 @@ class NewsController extends Controller
          ]);
          
           $news = new News;
+          $news->user_id = auth()->user()->id;
           $news ->topic =$request->input('topic');
            $news->body = $request->input('body');
            $news->topiclink = $request->input('topiclink');
@@ -61,7 +62,7 @@ class NewsController extends Controller
            $news->imagelink = $request->input('imagelink');
          
            $news-> save();
-           return redirect('/news')->with ('success','News Successfully Created');
+           return redirect('/news/create')->with ('success','News Successfully Created');
     }
 
     /**
@@ -83,7 +84,13 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+         $news = News::find($id);
+        // if (auth()->user()->id !== $news->user_id){
+        //     // return redirect('/posts',['error','Unauthorized Page']);
+        //  return redirect('/news')->with('error','Unauthorized Page');   
+        // }
+         return view('news.edit',  ['news'=> $news]);
     }
 
     /**
@@ -95,7 +102,15 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $request->validate([
+            'topic'=> 'required',
+            'body' => 'required',
+            'topiclink' => 'required',
+            'readmorelink' => 'required',
+            'imagelink' => 'required',
+
+        ]);   
     }
 
     /**

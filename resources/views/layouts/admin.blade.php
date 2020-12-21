@@ -38,7 +38,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{route('home')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -48,7 +48,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-               Center For Liberty Component
+               Center For Liberty 
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -61,7 +61,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom News:</h6>
-                        <a class="collapse-item" href="/news/create">Edit News</a>
+                        <a class="collapse-item" href="/news/create">Create News</a>
                         
                     </div>
                 </div>
@@ -133,7 +133,7 @@
 
                 <!-- Begin Page Content -->
                 <main class="container-fluid">
-                    {{-- @include('inc.messages') --}}
+                 @include('inc.messages') 
                     @yield('content')
 
                     <!-- Page Heading -->
