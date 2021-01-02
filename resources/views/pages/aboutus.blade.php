@@ -16,7 +16,7 @@
                 
             </div>
         </div>
-    </section>
+    </section>   
     <!-- page-title end -->
 
     <!-- we-are-section -->

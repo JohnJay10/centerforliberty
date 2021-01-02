@@ -28,9 +28,11 @@
                             <td class="sorting_1"></td>
                             <td>{{$news->topic}}</td>
                             <td>{{$news->created_at}}</td>
-                        <td><a href="news/{{$news->id}}/edit"> <i class="fa fa-edit text-blue"></i></a> /
-                                <a href=""> <i class="fa fa-trash "></i>
-                            </td>
+                        <td><a href="news/{{$news->id}}/edit"> <i class="fa fa-edit text-blue"></i></a>/
+                            <a href="{{ route('news.destroy',$news->id) }}" ><i class="fa fa-trash "></i></a>
+                              
+                                   
+                        </td>
                            
                         </tr>
                         @endforeach

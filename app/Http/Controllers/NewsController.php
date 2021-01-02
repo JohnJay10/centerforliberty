@@ -110,7 +110,20 @@ class NewsController extends Controller
             'readmorelink' => 'required',
             'imagelink' => 'required',
 
-        ]);   
+
+           
+        ]);
+        
+         $news =  News::find($id);
+         $news->user_id = auth()->user()->id;
+         $news ->topic =$request->input('topic');
+          $news->body = $request->input('body');
+          $news->topiclink = $request->input('topiclink');
+          $news->readmorelink = $request->input('readmorelink');
+          $news->imagelink = $request->input('imagelink');
+        
+          $news-> save();
+          return redirect('/news/create')->with ('success','News Successfully Updated');
     }
 
     /**
@@ -121,6 +134,9 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $news =  News::find($id);
+        $news-> delete();
+        
+        return redirect('/news')->with('success', 'News Successfully Deleted');
     }
 }
