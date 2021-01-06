@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\News;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -20,7 +21,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
+        $news = News::paginate(5);
         return view('news.index',['news'=> $news]);
     }
 
@@ -48,11 +49,26 @@ class NewsController extends Controller
              'topiclink' => 'required',
              'readmorelink' => 'required',
              'imagelink' => 'required',
+              'cover_image'=>'image|nullable|max:1999'
 
-
-            
          ]);
-         
+
+
+            if($request->hasFile('pictures')){
+                //get file name with extension
+                $filenameWithExt = $request->file('pictures')->getClientOriginalName();
+                //get file name
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //get just extension
+                $extension = $request->file('pictures')->getClientOriginalExtension();
+                //file name to store
+                $fileNameToStore = $filename .'_'.time().'.'.$extension;
+                //Upload image
+                $path = $request->file('pictures')->storeAs('public/pictures', $fileNameToStore);
+            }else{
+                $fileNameToStore= 'noimage.jpeg';
+            }
+
           $news = new News;
           $news->user_id = auth()->user()->id;
           $news ->topic =$request->input('topic');
@@ -60,7 +76,7 @@ class NewsController extends Controller
            $news->topiclink = $request->input('topiclink');
            $news->readmorelink = $request->input('readmorelink');
            $news->imagelink = $request->input('imagelink');
-         
+            $news->pictures = $fileNameToStore;
            $news-> save();
            return redirect('/news/create')->with ('success','News Successfully Created');
     }
@@ -84,11 +100,11 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        
+
          $news = News::find($id);
         // if (auth()->user()->id !== $news->user_id){
         //     // return redirect('/posts',['error','Unauthorized Page']);
-        //  return redirect('/news')->with('error','Unauthorized Page');   
+        //  return redirect('/news')->with('error','Unauthorized Page');
         // }
          return view('news.edit',  ['news'=> $news]);
     }
@@ -102,18 +118,29 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
         $request->validate([
-            'topic'=> 'required',
-            'body' => 'required',
-            'topiclink' => 'required',
-            'readmorelink' => 'required',
-            'imagelink' => 'required',
+             'topic'=> 'required',
+             'body' => 'required',
+             'topiclink' => 'required',
+             'readmorelink' => 'required',
+             'imagelink' => 'required',
+              'cover_image'=>'image|nullable|max:1999'
 
+         ]);
 
-           
-        ]);
-        
+          if($request->hasFile('pictures')){
+                //get file name with extension
+                $filenameWithExt = $request->file('pictures')->getClientOriginalName();
+                //get file name
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //get just extension
+                $extension = $request->file('pictures')->getClientOriginalExtension();
+                //file name to store
+                $fileNameToStore = $filename .'_'.time().'.'.$extension;
+                //Upload image
+                $path = $request->file('pictures')->storeAs('public/pictures', $fileNameToStore);
+            }
+
          $news =  News::find($id);
          $news->user_id = auth()->user()->id;
          $news ->topic =$request->input('topic');
@@ -121,9 +148,13 @@ class NewsController extends Controller
           $news->topiclink = $request->input('topiclink');
           $news->readmorelink = $request->input('readmorelink');
           $news->imagelink = $request->input('imagelink');
-        
+
+          if($request->hasFile('pictures')){
+          $news->pictures = $fileNameToStore;
+          }
+
           $news-> save();
-          return redirect('/news/create')->with ('success','News Successfully Updated');
+          return redirect('/home')->with ('success','News Successfully Updated');
     }
 
     /**
@@ -136,7 +167,11 @@ class NewsController extends Controller
     {
         $news =  News::find($id);
         $news-> delete();
-        
-        return redirect('/news')->with('success', 'News Successfully Deleted');
+
+        if($news->pictures != 'noimage.png'){
+        Storage::delete('public/pictures/' . $news-> pictures);
+        }
+
+        return redirect('/home')->with('success', 'News Successfully Deleted');
     }
 }
